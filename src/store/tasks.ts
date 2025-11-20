@@ -16,6 +16,8 @@ interface ITaskState {
     remove: (taskId: string) => void;
     swapTasks: (fromIndex: number, toIndex: number) => void;
     updateColumn: (taskIndex: number, columnId: string) => void;
+    updateTitle: (taskId: string, title: string) => void;
+    updateContent: (taskId: string, content: string) => void;
 }
 
 export const useTaskStore = create<ITaskState>()(
@@ -37,6 +39,16 @@ export const useTaskStore = create<ITaskState>()(
                 remove(taskId: string) {
                     set(state => ({
                         tasks: state.tasks.filter(task => task.id !== taskId)
+                    }))
+                },
+                updateTitle(taskId: string,title: string) {
+                    set(state => ({
+                        tasks: state.tasks.map(task => task.id === taskId ? {...task, title} : task)
+                    }))
+                },
+                updateContent(taskId: string, content: string) {
+                    set(state => ({
+                        tasks: state.tasks.map(task => task.id === taskId ? {...task, content} : task)
                     }))
                 },
                 swapTasks(fromIndex: number, toIndex: number) {
