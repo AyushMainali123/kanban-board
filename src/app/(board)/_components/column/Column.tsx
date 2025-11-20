@@ -14,11 +14,11 @@ interface IColumnProps {
     id: string;
     title: string;
     state?: "overlay" | "normal";
+    shouldAnimateLists?: boolean;
     onDelete?: (id: string) => void;
 }
 
-export function Column({id, title, state="normal", onDelete}: IColumnProps) {
-
+export function Column({id, title, state="normal", shouldAnimateLists = true, onDelete}: IColumnProps) {
     const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
         id,
         data: {
@@ -48,7 +48,7 @@ export function Column({id, title, state="normal", onDelete}: IColumnProps) {
                 </Button>
             </div>
             <div className="max-h-[600px] overflow-auto  h-min">
-                <TasksContainer columnId={id}  />
+                <TasksContainer shouldAnimateLists={shouldAnimateLists} columnId={id}  />
             </div>
             <TaskAdder columnId={id} />
         </div>

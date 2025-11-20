@@ -40,7 +40,7 @@ export function Task({id, title, state="normal"}: ITask) {
 
 
     return (
-        <li 
+        <div 
             className={cn(
                 "relative flex justify-between items-center bg-gray-700 text-white rounded-sm py-3 px-4 hover:ring-2 ring-white min-h-14" ,
                 state === "overlay" && "opacity-70",
@@ -60,6 +60,6 @@ export function Task({id, title, state="normal"}: ITask) {
                 <div className={isHovering ? "block" : "hidden"}>
                     <TaskActions taskId={id}  />
                 </div>
-        </li>
+        </div>
     )
 }

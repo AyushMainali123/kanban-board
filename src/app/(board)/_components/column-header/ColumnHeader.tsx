@@ -58,6 +58,7 @@ export function ColumnHeader({columnId, title}: IColumnHeaderProps) {
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        e.stopPropagation();
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             formRef.current?.requestSubmit();
@@ -81,7 +82,6 @@ export function ColumnHeader({columnId, title}: IColumnHeaderProps) {
                                 <Field data-invalid={fieldState.invalid}>
                                     <Textarea
                                         className="min-h-fit resize-none"
-
                                         id={field.name}  
                                         autoComplete="off"
                                         {...field}

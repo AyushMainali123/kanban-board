@@ -28,13 +28,11 @@ export function TaskActions({ taskId}: ITaskActionsProps) {
                     showCloseButton={false}
                     onPointerDown={(e) => e.stopPropagation()}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onInteractOutside={(e) => e.preventDefault()}
-
                 >
                     <DialogHeader>
                     <DialogTitle className="flex justify-between items-center">
                         <EditTaskTitle  taskId={taskId} title={currentTask.title}  />
-                        <DialogClose className="cursor-pointer"  asChild>
+                        <DialogClose className="curs or-pointer"  asChild>
                             <Button aria-label="Close Dialog" size={"icon-sm"} variant={"ghost"}>
                                 <X />
                             </Button>
@@ -44,8 +42,6 @@ export function TaskActions({ taskId}: ITaskActionsProps) {
                     <EditTaskDescription  content={currentTask.content} taskId={currentTask.id}  />
                 </DialogContent>
             </Dialog>
-
-
  
             <Button variant={"ghost"} size="icon-sm" aria-label={`Delete task ${currentTask.title}`} onClick={() => remove(taskId)}>
                 <Trash aria-hidden="true" />

@@ -75,6 +75,7 @@ export function TaskAdder({columnId}: ITaskAdder) {
                                         placeholder="Task name" 
                                         id={field.name}  
                                         autoComplete="off"
+                                        onKeyDown={e => e.stopPropagation()}
                                         {...field}
                                         ref={inputRef}
                                         />
