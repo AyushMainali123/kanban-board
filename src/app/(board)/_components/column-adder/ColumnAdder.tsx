@@ -66,7 +66,10 @@ export function ColumnAdder() {
                                 </Field>
                             )}
                         />
-                        <Button type="submit" variant={"secondary"}  className="mt-2">Submit</Button>
+                         <div className="flex gap-2 items-center mt-2">
+                            <Button type="submit" variant={"secondary"}  >Submit</Button>
+                            <Button type="button" variant={"ghost"} onClick={() => setMode("default")}>Cancel</Button>
+                        </div>
                     </form>
         </Activity>
         </>

@@ -7,6 +7,7 @@ import { TaskAdder } from "../task-adder";
 import { useSortable } from "@dnd-kit/sortable";
 import {CSS} from '@dnd-kit/utilities';
 import { cn } from "@/lib/utils";
+import { ColumnHeader } from "../column-header";
 
 
 interface IColumnProps {
@@ -34,19 +35,21 @@ export function Column({id, title, state="normal", onDelete}: IColumnProps) {
 
     return (
         <div className={cn(
-            "bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm w-xs h-min max-h-[600px] cursor-pointer relative",
+            "bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm w-xs h-min cursor-pointer relative",
             state === "overlay" && "opacity-70 rotate-3",
         )} style={style}  ref={setNodeRef} {...attributes} {...listeners}>
             {isDragging && (
                 <div className="absolute top-0 left-0 h-full w-full bg-gray-300 rounded-sm" />
             )}
-            <div className="flex justify-between items-center">
-                <h4 className="text-xl font-semibold">{title}</h4>
+            <div className="flex justify-between items-center gap-2">
+                <ColumnHeader columnId={id} title={title}  />
                 <Button size={"icon"} aria-label="Delete Column" variant={"secondary"} onClick={() => onDelete?.(id)}>
                     <TrashIcon />
                 </Button>
             </div>
-            <TasksContainer columnId={id}  />
+            <div className="max-h-[600px] overflow-auto  h-min">
+                <TasksContainer columnId={id}  />
+            </div>
             <TaskAdder columnId={id} />
         </div>
     )

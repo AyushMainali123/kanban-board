@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useTaskStore } from "@/store/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
-import { Activity, useId, useState } from "react";
+import { Activity, useEffect, useId, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -31,23 +31,33 @@ export function TaskAdder({columnId}: ITaskAdder) {
 
     const [mode, setMode] = useState<TMode>("default");
     const {create} = useTaskStore();
+    const inputRef = useRef<HTMLInputElement>(null);
     const id = useId();
    
     const formMethods = useForm<TaskForm>({
         resolver: zodResolver(taskFormSchema),
         defaultValues: DEFAULT_FORM_VALUES,
-    });     
+    });    
+    
+    function changeModeToAdd() {
+        setMode("add");
+        inputRef.current?.focus();
+    }
 
     function handleFormSubmit(data: TaskForm) {
         create(columnId, data.taskname);
         formMethods.reset();
-        setMode("default");
     }
+
+
+    useEffect(() => {
+        if(mode === "add") inputRef.current?.focus();
+    }, [mode])
 
     return (
         <>
             <Activity mode={mode === "default" ? "visible" : "hidden"}>
-                <Button onClick={() => setMode("add")} className="w-full bg-transparent hover:bg-gray-700">
+                <Button onClick={changeModeToAdd} className="w-full bg-transparent hover:bg-gray-700">
                     <Plus aria-hidden="true" />  Add a card
                 </Button>
             </Activity>
@@ -61,19 +71,23 @@ export function TaskAdder({columnId}: ITaskAdder) {
                                 <Field data-invalid={fieldState.invalid}>
                                     <FieldLabel htmlFor={field.name}>Enter Task name</FieldLabel>
                                     <Input
-                                     type="text"
-                                     placeholder="Task name" 
-                                     id={field.name}  
-                                     autoComplete="off"  
-                                     {...field}
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
+                                        type="text"
+                                        placeholder="Task name" 
+                                        id={field.name}  
+                                        autoComplete="off"
+                                        {...field}
+                                        ref={inputRef}
+                                        />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
                                 </Field>
                             )}
                         />
-                        <Button type="submit" variant={"secondary"}  className="mt-2">Submit</Button>
+                        <div className="flex gap-2 items-center mt-2">
+                            <Button type="submit" variant={"secondary"}  >Submit</Button>
+                            <Button type="button" variant={"ghost"} onClick={() => setMode("default")}>Cancel</Button>
+                        </div>
                     </form>
             </Activity>
         </>
