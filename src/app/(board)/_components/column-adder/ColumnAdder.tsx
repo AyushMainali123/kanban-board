@@ -5,7 +5,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useColumnsStore } from "@/store/columns";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Activity, useState } from "react";
+import { Activity, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -24,6 +24,7 @@ const DEFAULT_FORM_VALUES: ColumnForm = {
 export function ColumnAdder() {
     const { addColumn } = useColumnsStore();
     const [mode, setMode] = useState<Mode>("default");
+    const id = useId();
     
     const formMethods = useForm<ColumnForm>({
         resolver: zodResolver(columnFormSchema),
@@ -45,7 +46,7 @@ export function ColumnAdder() {
         </Activity>
          
         <Activity mode={mode === "create" ? "visible" : "hidden"}>
-                <form id="create-column-form" className="min-w-xs bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm h-min max-h-[600px]" onSubmit={formMethods.handleSubmit(handleFormSubmit)}>
+                <form id={`create-column-form-${id}`} className="min-w-xs bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm h-min max-h-[600px]" onSubmit={formMethods.handleSubmit(handleFormSubmit)}>
                         <Controller
                             control={formMethods.control}
                             name="columnName"

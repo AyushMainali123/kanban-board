@@ -12,18 +12,17 @@ import { cn } from "@/lib/utils";
 interface IColumnProps {
     id: string;
     title: string;
-    taskIds: string[];
     state?: "overlay" | "normal";
     onDelete?: (id: string) => void;
 }
 
-export function Column({id, title, taskIds, state="normal", onDelete}: IColumnProps) {
+export function Column({id, title, state="normal", onDelete}: IColumnProps) {
 
     const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
         id,
         data: {
             type: "Column",
-            data: {id, title, taskIds}
+            column: {id, title}
         }
     });
 
@@ -36,7 +35,7 @@ export function Column({id, title, taskIds, state="normal", onDelete}: IColumnPr
     return (
         <div className={cn(
             "bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm w-xs h-min max-h-[600px] cursor-pointer relative",
-            state === "overlay" ? "rotate-4" : "rotate-0",
+            state === "overlay" && "opacity-70 rotate-3",
         )} style={style}  ref={setNodeRef} {...attributes} {...listeners}>
             {isDragging && (
                 <div className="absolute top-0 left-0 h-full w-full bg-gray-300 rounded-sm" />
@@ -47,8 +46,7 @@ export function Column({id, title, taskIds, state="normal", onDelete}: IColumnPr
                     <TrashIcon />
                 </Button>
             </div>
-
-            <TasksContainer tasks={taskIds}  />
+            <TasksContainer columnId={id}  />
             <TaskAdder columnId={id} />
         </div>
     )

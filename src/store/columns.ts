@@ -2,11 +2,11 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { createId } from "@paralleldrive/cuid2";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { useTaskStore } from "./tasks";
 
 export interface IColumn {
     id: string;
     title: string;
-    taskIds: string[];
 }
 
 interface IColumnsState {
@@ -25,7 +25,7 @@ export const useColumnsStore = create<IColumnsState>()(
         (set, get) => ({
             columns: [],
             addColumn: (title: string) => {
-                const newColumn: IColumn = {title, taskIds: [], id: createId()};
+                const newColumn: IColumn = {title, id: createId()};
                 set((state) => ({
                     columns: [...state.columns, newColumn]
                 }))
@@ -33,6 +33,13 @@ export const useColumnsStore = create<IColumnsState>()(
             removeColumn: (columnId: string) => {
                 const column = get().columns.find(col => col.id === columnId);
                 if (!column) return;
+
+                const taskState = useTaskStore.getState();
+
+                // Delete tasks before deleting column
+                for(const task of taskState.tasks) {
+                    if(task.columnId === columnId) taskState.remove(task.id);
+                }
 
                 set((state) => ({
                     columns: state.columns.filter((col) => col.id !== columnId),

@@ -1,15 +1,25 @@
+import { useMemo } from "react";
 import { Task } from "../task";
+import { useTaskStore } from "@/store/tasks";
+import { SortableContext } from "@dnd-kit/sortable";
 
 interface ITasksContainer {
-    tasks: string[];
+    columnId: string;
 }
 
-export function TasksContainer({tasks}: ITasksContainer) {
+export function TasksContainer({ columnId }: ITasksContainer) {
+    
+    const {tasks: allTasks} = useTaskStore();
+    const filteredTasks = useMemo(() => allTasks.filter(task => task.columnId === columnId), [columnId, allTasks]);
+    const taskIds = useMemo(() => filteredTasks.map(task => task.id), [filteredTasks]);
+    
     return (
         <ul className="py-4 flex flex-col gap-4">
-            {tasks.map(task => (
-                <Task id={task} title={"Hello"} key={task}  />
-            ))}
+            <SortableContext items={taskIds}>
+                {filteredTasks.map(task => (
+                    <Task id={task.id} title={task.title} key={task.id}  />
+                ))}
+            </SortableContext>
         </ul>
     )
 }

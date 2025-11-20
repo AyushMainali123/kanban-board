@@ -1,20 +1,81 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { useTaskStore } from "@/store/tasks";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
+import { Activity, useId, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 
 interface ITaskAdder {
     columnId: string;
 }
 
+const taskFormSchema = z.object({
+    taskname: z.string().min(3, "Task should be atleast 3 characters long!")
+})
+
+type TaskForm = z.infer<typeof taskFormSchema>;
+
+
+type TMode = "default" | "add";
+
+const DEFAULT_FORM_VALUES: TaskForm = {
+    taskname: "",
+}
+
 export function TaskAdder({columnId}: ITaskAdder) {
 
-    function addATask() {
-        console.log({columnId});
+    const [mode, setMode] = useState<TMode>("default");
+    const {create} = useTaskStore();
+    const id = useId();
+   
+    const formMethods = useForm<TaskForm>({
+        resolver: zodResolver(taskFormSchema),
+        defaultValues: DEFAULT_FORM_VALUES,
+    });     
+
+    function handleFormSubmit(data: TaskForm) {
+        create(columnId, data.taskname);
+        formMethods.reset();
+        setMode("default");
     }
+
     return (
-        <Button onClick={addATask} className="w-full bg-transparent hover:bg-gray-700">
-            <Plus aria-hidden="true" />  Add a card
-        </Button>
+        <>
+            <Activity mode={mode === "default" ? "visible" : "hidden"}>
+                <Button onClick={() => setMode("add")} className="w-full bg-transparent hover:bg-gray-700">
+                    <Plus aria-hidden="true" />  Add a card
+                </Button>
+            </Activity>
+
+            <Activity mode={mode === "add" ? "visible" : "hidden"}>
+                <form id={`create-task-form-${id}`} className="w-full bg-transparent" onSubmit={formMethods.handleSubmit(handleFormSubmit)}>
+                        <Controller
+                            control={formMethods.control}
+                            name="taskname"
+                            render={({field, fieldState}) => (
+                                <Field data-invalid={fieldState.invalid}>
+                                    <FieldLabel htmlFor={field.name}>Enter Task name</FieldLabel>
+                                    <Input
+                                     type="text"
+                                     placeholder="Task name" 
+                                     id={field.name}  
+                                     autoComplete="off"  
+                                     {...field}
+                                    />
+                                    {fieldState.invalid && (
+                                        <FieldError errors={[fieldState.error]} />
+                                    )}
+                                </Field>
+                            )}
+                        />
+                        <Button type="submit" variant={"secondary"}  className="mt-2">Submit</Button>
+                    </form>
+            </Activity>
+        </>
     )
 }
