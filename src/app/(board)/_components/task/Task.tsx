@@ -26,7 +26,7 @@ export function Task({id, title, state="normal"}: ITask) {
 
 
     const style = {
-        transform: CSS.Transform.toString(transform),
+        transform: CSS.Translate.toString(transform),
         transition
     };
 

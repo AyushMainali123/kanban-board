@@ -29,7 +29,7 @@ export function Column({id, title, state="normal", onDelete}: IColumnProps) {
 
     const style = {
         transition,
-        transform: CSS.Transform.toString(transform)
+        transform: CSS.Translate.toString(transform)
     }
 
 

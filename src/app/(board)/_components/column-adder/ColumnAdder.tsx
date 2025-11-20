@@ -42,7 +42,7 @@ export function ColumnAdder() {
         <>
         
         <Activity mode={mode === "default" ? "visible" : "hidden"}>
-            <Button variant={"outline"} className="w-xs" onClick={() => setMode("create")}>Add New Column</Button> 
+            <Button variant={"outline"} className="w-xs" onClick={() => setMode("create")}>+ Add New Column</Button> 
         </Activity>
          
         <Activity mode={mode === "create" ? "visible" : "hidden"}>
