@@ -1,29 +1,31 @@
+import { arrayMove } from "@dnd-kit/sortable";
 import { createId } from "@paralleldrive/cuid2";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-export interface Column {
+export interface IColumn {
     id: string;
     title: string;
     taskIds: string[];
 }
 
-interface ColumnsState {
-    columns: Column[];
+interface IColumnsState {
+    columns: IColumn[];
     addColumn: (title: string) => void;
     removeColumn: (columnId: string) => void;
-    updateColumn: (column: Column) => void;
+    updateColumn: (column: IColumn) => void;
+    swapColumn: (fromIndex: number, toIndex: number) => void;
 }
 
 
 
-export const useColumnsStore = create<ColumnsState>()(
+export const useColumnsStore = create<IColumnsState>()(
   devtools(
     persist(
         (set, get) => ({
             columns: [],
             addColumn: (title: string) => {
-                const newColumn: Column = {title, taskIds: [], id: createId()};
+                const newColumn: IColumn = {title, taskIds: [], id: createId()};
                 set((state) => ({
                     columns: [...state.columns, newColumn]
                 }))
@@ -36,13 +38,19 @@ export const useColumnsStore = create<ColumnsState>()(
                     columns: state.columns.filter((col) => col.id !== columnId),
                 }));
             },
-            updateColumn: (updatedColumn: Column) => {
+            updateColumn: (updatedColumn: IColumn) => {
                 set((state) => ({
                     columns: state.columns.map((col) =>
                         col.id === updatedColumn.id ? updatedColumn : col
                     ),
                 }));
             },
+            swapColumn: (fromIndex: number, toIndex: number) => {
+                set((state) => ({
+                    columns: arrayMove(state.columns, fromIndex, toIndex)
+                }));
+            }
+
         }),
 
       {

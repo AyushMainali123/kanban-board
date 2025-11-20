@@ -4,19 +4,43 @@ import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
 import { TasksContainer } from "../tasks-container";
 import { TaskAdder } from "../task-adder";
+import { useSortable } from "@dnd-kit/sortable";
+import {CSS} from '@dnd-kit/utilities';
+import { cn } from "@/lib/utils";
 
 
 interface IColumnProps {
     id: string;
     title: string;
     taskIds: string[];
+    state?: "overlay" | "normal";
     onDelete?: (id: string) => void;
 }
 
-export function Column({id, title, taskIds, onDelete}: IColumnProps) {
+export function Column({id, title, taskIds, state="normal", onDelete}: IColumnProps) {
+
+    const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
+        id,
+        data: {
+            type: "Column",
+            data: {id, title, taskIds}
+        }
+    });
+
+    const style = {
+        transition,
+        transform: CSS.Transform.toString(transform)
+    }
+
 
     return (
-        <div className="bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm w-xs h-min max-h-[600px] cursor-pointer">
+        <div className={cn(
+            "bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm w-xs h-min max-h-[600px] cursor-pointer relative",
+            state === "overlay" ? "rotate-4" : "rotate-0",
+        )} style={style}  ref={setNodeRef} {...attributes} {...listeners}>
+            {isDragging && (
+                <div className="absolute top-0 left-0 h-full w-full bg-gray-300 rounded-sm" />
+            )}
             <div className="flex justify-between items-center">
                 <h4 className="text-xl font-semibold">{title}</h4>
                 <Button size={"icon"} aria-label="Delete Column" variant={"secondary"} onClick={() => onDelete?.(id)}>

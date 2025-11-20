@@ -1,10 +1,18 @@
 "use client";
 
-import { useColumnsStore } from "@/store/columns";
+import { IColumn, useColumnsStore } from "@/store/columns";
 import { Column } from "../column";
+import { SortableContext } from "@dnd-kit/sortable";
+import { DragOverlay } from "@dnd-kit/core";
 
-export  function ColumnsContainer() {
+
+interface IColumnsContainerProps {
+    activeColumn: IColumn | null;
+}
+
+export  function ColumnsContainer({activeColumn}: IColumnsContainerProps) {
     const { columns, removeColumn } = useColumnsStore();
+    const columnsId = columns.map(column => column.id);
 
     function handleColumnDelete(columnId: string) {
         removeColumn(columnId);
@@ -12,9 +20,16 @@ export  function ColumnsContainer() {
     
     return (
         <div className="flex gap-8">
-           {columns.map(column => (
-                <Column {...column} onDelete={() => handleColumnDelete(column.id)} key={column.id} />
-           ))}
+            <SortableContext items={columnsId}>
+                {columns.map(column => (
+                    <Column {...column} onDelete={() => handleColumnDelete(column.id)} key={column.id} />
+                ))}
+                {activeColumn && (
+                    <DragOverlay>
+                        <Column state="overlay"  {...activeColumn} />
+                    </DragOverlay>
+                )}
+            </SortableContext>
         </div>
     )
 }
