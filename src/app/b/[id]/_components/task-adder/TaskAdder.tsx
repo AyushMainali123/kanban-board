@@ -57,7 +57,7 @@ export function TaskAdder({columnId}: ITaskAdder) {
     return (
         <>
             <Activity mode={mode === "default" ? "visible" : "hidden"}>
-                <Button onClick={changeModeToAdd} className="w-full bg-transparent hover:bg-gray-700">
+                <Button onClick={changeModeToAdd} size={"lg"} className="w-full">
                     <Plus aria-hidden="true" />  Add a card
                 </Button>
             </Activity>
@@ -85,8 +85,8 @@ export function TaskAdder({columnId}: ITaskAdder) {
                                 </Field>
                             )}
                         />
-                        <div className="flex gap-2 items-center mt-2">
-                            <Button type="submit" variant={"secondary"}  >Submit</Button>
+                        <div className="flex gap-2 items-center mt-4">
+                            <Button type="submit" >Submit</Button>
                             <Button type="button" variant={"ghost"} onClick={() => setMode("default")}>Cancel</Button>
                         </div>
                     </form>

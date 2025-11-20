@@ -6,12 +6,13 @@ import { useTaskStore } from "./tasks";
 
 export interface IColumn {
     id: string;
+    boardId: string;
     title: string;
 }
 
 interface IColumnsState {
     columns: IColumn[];
-    addColumn: (title: string) => void;
+    addColumn: (title: string, boardId: string) => void;
     removeColumn: (columnId: string) => void;
     updateColumn: (column: IColumn) => void;
     swapColumn: (fromIndex: number, toIndex: number) => void;
@@ -24,8 +25,8 @@ export const useColumnsStore = create<IColumnsState>()(
     persist(
         (set, get) => ({
             columns: [],
-            addColumn: (title: string) => {
-                const newColumn: IColumn = {title, id: createId()};
+            addColumn: (title: string, boardId: string) => {
+                const newColumn: IColumn = {title, id: createId(), boardId};
                 set((state) => ({
                     columns: [...state.columns, newColumn]
                 }))

@@ -3,11 +3,17 @@
 import { useColumnsStore } from "@/store/columns";
 import { Column } from "../column";
 import { SortableContext } from "@dnd-kit/sortable";
+import { useParams } from "next/navigation";
+import { useMemo } from "react";
 
 
 export  function ColumnsContainer() {
     const { columns, removeColumn } = useColumnsStore();
-    const columnsId = columns.map(column => column.id);
+    const params = useParams();
+    const boardId = params.id;
+    
+    const boardColumns = useMemo(() => columns.filter(col => col.boardId === boardId), [columns, boardId]);
+    const columnsId = boardColumns.map(column => column.id);
 
     function handleColumnDelete(columnId: string) {
         removeColumn(columnId);
@@ -16,7 +22,7 @@ export  function ColumnsContainer() {
     return (
         <div className="flex gap-8">
             <SortableContext items={columnsId}>
-                {columns.map(column => (
+                {boardColumns.map(column => (
                     <Column {...column} onDelete={() => handleColumnDelete(column.id)} key={column.id} />
                 ))}
                 

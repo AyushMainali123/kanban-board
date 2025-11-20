@@ -16,7 +16,7 @@ export function TasksContainer({ columnId, shouldAnimateLists = true }: ITasksCo
     const taskIds = useMemo(() => filteredTasks.map(task => task.id), [filteredTasks]);
     
     return (
-        <ul className="py-4 flex flex-col gap-4">
+        <ul className="py-4 flex flex-col gap-2">
             <SortableContext items={taskIds}>
 
                 {

@@ -97,7 +97,7 @@ export function EditTaskDescription({ taskId, content }: IEditTaskDescription) {
                       {...field}
                       ref={textareaRef}
                       onBlur={handleBlur}
-                      
+                      onKeyDown={(e) => e.stopPropagation()}
                       autoComplete="off"
                       className={cn(
                         fieldState.invalid && "border-destructive",

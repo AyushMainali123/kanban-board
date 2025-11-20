@@ -1,10 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useColumnsStore } from "@/store/columns";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "next/navigation";
 import { Activity, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -23,6 +25,8 @@ const DEFAULT_FORM_VALUES: ColumnForm = {
 
 export function ColumnAdder() {
     const { addColumn } = useColumnsStore();
+    const params = useParams();
+    const boardId = params.id as string;
     const [mode, setMode] = useState<Mode>("default");
     const id = useId();
     
@@ -33,7 +37,8 @@ export function ColumnAdder() {
     
 
     function handleFormSubmit(data: ColumnForm) {
-        addColumn(data.columnName);
+        if(!boardId || typeof boardId !== "string") return;
+        addColumn(data.columnName, boardId);
         formMethods.reset(DEFAULT_FORM_VALUES);
         setMode("default");
     }
@@ -46,7 +51,10 @@ export function ColumnAdder() {
         </Activity>
          
         <Activity mode={mode === "create" ? "visible" : "hidden"}>
-                <form id={`create-column-form-${id}`} className="min-w-xs bg-gray-900 text-white px-4 pt-6 pb-3 rounded-sm h-min max-h-[600px]" onSubmit={formMethods.handleSubmit(handleFormSubmit)}>
+            <Card className=" h-min max-h-[600px] min-w-xs">
+                <CardContent>
+
+                <form id={`create-column-form-${id}`} className="" onSubmit={formMethods.handleSubmit(handleFormSubmit)}>
                         <Controller
                             control={formMethods.control}
                             name="columnName"
@@ -66,11 +74,13 @@ export function ColumnAdder() {
                                 </Field>
                             )}
                         />
-                         <div className="flex gap-2 items-center mt-2">
-                            <Button type="submit" variant={"secondary"}  >Submit</Button>
+                         <div className="flex gap-2 items-center mt-4">
+                            <Button type="submit" >Submit</Button>
                             <Button type="button" variant={"ghost"} onClick={() => setMode("default")}>Cancel</Button>
                         </div>
                     </form>
+                </CardContent>
+            </Card>
         </Activity>
         </>
       
