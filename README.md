@@ -2,6 +2,10 @@
 
 A lightweight, single‑page Kanban board built with Next.js, TypeScript, Tailwind CSS and Zustand.
 
+## Demo Video
+
+[![Demo Video](https://kanban-board-pi-mauve.vercel.app/app-demo.mp4)]
+
 ## Features
 
 - Board Layout
