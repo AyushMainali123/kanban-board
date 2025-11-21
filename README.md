@@ -1,15 +1,30 @@
 # Kanban Board
 
-A lightweight, single‑page Kanban board built with Next.js, TypeScript, Tailwind CSS and Zustand. This app supports multiple boards, columns and tasks with drag-and-drop ordering, Keyboard navigation accessibility, and local persistence.
+A lightweight, single‑page Kanban board built with Next.js, TypeScript, Tailwind CSS and Zustand.
 
 ## Features
 
-- Create, and delete boards, columns and tasks
-- Rename columns, and tasks
-- Drag and drop columns and tasks using `@dnd-kit` sortable utilities
-- Persistent client state using `zustand` with `persist` (localStorage)
-- Forms validated with `react-hook-form` and `zod`
-- Accessible UI primitives with Radix (ShadCN) and iconography via `lucide-react`
+- Board Layout
+  - N number of columns that can be added or removed according to the requirement
+  - Each card has a title, and optional description
+  - Add new card button for every column
+- Drag and Drop
+  - Cards draggable between columns
+  - Highlight column and tasks during drag
+- Animations
+  - Smooth drag and drop transitions
+  - Animted creation or removal of tasks
+  - Modal transition on edit task
+- Persistence
+  - Localstorage persistance
+- Additional Features
+  - Editable Task title, and description.
+  - Add or rename columns
+  - Add or remove boards
+  - Board displays only those cards, and columns that are created under it.
+  - Filter / Search (Store structre created in a way that we can implement this functionality in the future).
+  - Column Reordering.
+  - Keyboard Accessibility (On Space).
 
 ## Tech Stack
 
