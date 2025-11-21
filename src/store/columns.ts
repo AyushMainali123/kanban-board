@@ -14,7 +14,7 @@ interface IColumnsState {
   columns: IColumn[];
   addColumn: (title: string, boardId: string) => void;
   removeColumn: (columnId: string) => void;
-  updateColumn: (column: IColumn) => void;
+  updateColumn: (column: Partial<IColumn>) => void;
   swapColumn: (fromIndex: number, toIndex: number) => void;
 }
 
@@ -44,10 +44,10 @@ export const useColumnsStore = create<IColumnsState>()(
             columns: state.columns.filter((col) => col.id !== columnId),
           }));
         },
-        updateColumn: (updatedColumn: IColumn) => {
+        updateColumn: (updatedColumn: Partial<IColumn>) => {
           set((state) => ({
             columns: state.columns.map((col) =>
-              col.id === updatedColumn.id ? updatedColumn : col
+              col.id === updatedColumn.id ? ({...col, ...updatedColumn}) : col
             ),
           }));
         },
