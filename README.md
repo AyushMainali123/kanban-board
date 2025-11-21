@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kanban Board
 
-## Getting Started
+A lightweight, single‑page Kanban board built with Next.js, TypeScript, Tailwind CSS and Zustand. This app supports multiple boards, columns and tasks with drag-and-drop ordering, Keyboard navigation accessibility, and local persistence.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Create, and delete boards, columns and tasks
+- Rename columns, and tasks
+- Drag and drop columns and tasks using `@dnd-kit` sortable utilities
+- Persistent client state using `zustand` with `persist` (localStorage)
+- Forms validated with `react-hook-form` and `zod`
+- Accessible UI primitives with Radix (ShadCN) and iconography via `lucide-react`
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- React 19 + TypeScript
+- Tailwind CSS
+- Zustand (state management)
+- @dnd-kit (drag and drop)
+- react-hook-form + zod (forms & validation)
+- Radix UI(ShadCN) (dialogs, labels, separators)
+
+## Quick Start
+
+Prerequisites: Node.js 22+ and `pnpm` (recommended). The repository contains a `pnpm-lock.yaml`.
+
+Install dependencies:
+
+```powershell
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```powershell
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Build for production:
 
-## Learn More
+```powershell
+pnpm build
+pnpm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+Helper scripts (from `package.json`):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `pnpm lint` — run ESLint
+- `pnpm format` — run Prettier
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure (important files)
 
-## Deploy on Vercel
+- `src/app/` — Next.js App Router pages and layout
+  - `app/(boards)` — UI for the boards list
+  - `app/b/[id]` — Board detail / kanban view
+- `src/components/` — shared UI components and design system primitives
+- `src/store/` — Zustand stores and persistence
+  - `boards.ts` — board CRUD and removal logic
+  - `columns.ts` — column CRUD, swap ordering and cascade deletion of tasks
+  - `tasks.ts` — task CRUD, move/swap and content updates
+  - `active-drag.ts` — tracks the currently-dragged column/task
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## State & Persistence
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+State is handled with `zustand` and persisted to `localStorage` using `persist`. Each store uses a separate key:
+
+- `board-storage` (boards)
+- `columns-storage` (columns)
+- `task-storage` (tasks)
