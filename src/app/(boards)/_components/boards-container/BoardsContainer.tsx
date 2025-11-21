@@ -23,11 +23,18 @@ export function BoardsContainer() {
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {boards.map((board) => (
-          <Board {...board} key={board.id} onDelete={handleBoardDelete} />
-        ))}
-      </div>
+      <h2 className="mb-6 text-2xl font-bold">Your Boards</h2>
+      {!!boards.length && (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {boards.map((board) => (
+            <Board {...board} key={board.id} onDelete={handleBoardDelete} />
+          ))}
+        </div>
+      )}
+
+      {boards.length === 0 && (
+        <p>It is all empty here. Add boards to get started!</p>
+      )}
 
       <div className="mt-12">
         <BoardAdder />
