@@ -4,7 +4,7 @@ A lightweight, single‑page Kanban board built with Next.js, TypeScript, Tailwi
 
 ## Demo Video
 
-[![Demo Video](https://kanban-board-pi-mauve.vercel.app/app-demo.mp4)]
+[[Demo Video](https://kanban-board-pi-mauve.vercel.app/app-demo.mp4)]
 
 ## Features
 
