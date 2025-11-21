@@ -1,1 +1,1 @@
-export * from "./BoardsContainer";
+export * from './BoardsContainer';

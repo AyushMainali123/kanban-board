@@ -1,1 +1,1 @@
-export * from "./EditTaskTitle";
+export * from './EditTaskTitle';

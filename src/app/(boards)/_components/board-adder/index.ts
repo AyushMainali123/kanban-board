@@ -1,1 +1,1 @@
-export * from "./BoardAdder";
+export * from './BoardAdder';
